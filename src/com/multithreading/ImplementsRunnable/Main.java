@@ -1,8 +1,7 @@
-package ExtendsThread;
+package com.multithreading.ImplementsRunnable;
 
-
-//By extending the thread, we need to implement the run method. so that when we start the thread of the particular class, the run method will get invoked automatically.
-class Hi extends Thread {
+//Disadvantage of extends thread to implement multithreading is, when we want to extend other classes also, but we can't since Java doesn't support multiple inheritance. That is the reason we are going for runnable interface to implement multithreading.
+class Hi implements Runnable {
     public void run() {
         for (int i = 0; i < 5; i++) {
             System.out.println("Hi");
@@ -14,7 +13,7 @@ class Hi extends Thread {
     }
 }
 
-class Hello extends Thread {
+class Hello implements Runnable {
     public void run() {
         for (int i = 0; i < 5; i++) {
             System.out.println("Hello");
@@ -26,21 +25,25 @@ class Hello extends Thread {
     }
 }
 
-public class Main {
 
+public class Main {
     public static void main(String[] args) {
         Hi hi = new Hi();
         Hello hello = new Hello();
 
-        hi.start();
+        //We can also put above 2 lines like this
+        //Runnable hi = new Hi();
+        //Runnable hello = new Hello();
 
-        //This try catch block is added because when we start different threads at same time, the threads will go to scheduler and at some time, one thread may execute before another thread and vice versa so to remove the collision, added the block to execute the first thread before the second thread.
+        Thread t1 = new Thread(hi);
+        Thread t2 = new Thread(hello);
+
+        t1.start();
+
         try {
             Thread.sleep(10);
         } catch (Exception ex) {}
 
-        hello.start();
-
+        t2.start();
     }
 }
-
