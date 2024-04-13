@@ -1,10 +1,10 @@
 package com.multithreading.ImplementsRunnable;
 
-public class LambaExpression {
+public class LambdaExpression {
     public static void main(String[] args) throws Exception {
         Runnable obj1 = () -> {
                 for (int i = 0; i < 5; i++) {
-                    System.out.println("Hi");
+                    System.out.println("Hi " + Thread.currentThread().getPriority());
                     try {
                         Thread.sleep(500);
                     } catch (Exception ex) {
@@ -14,7 +14,7 @@ public class LambaExpression {
 
         Runnable obj2 = () -> {
                 for (int i = 0; i < 5; i++) {
-                    System.out.println("Hello");
+                    System.out.println("Hello " + Thread.currentThread().getPriority());
                     try {
                         Thread.sleep(500);
                     } catch (Exception ex) {
@@ -22,8 +22,14 @@ public class LambaExpression {
                 }
             };
 
-        Thread t1 = new Thread(obj1);
-        Thread t2 = new Thread(obj2);
+        Thread t1 = new Thread(obj1, "Hi thread");
+        Thread t2 = new Thread(obj2, "Hello thread");
+
+        System.out.println(t1.getName());
+        System.out.println(t2.getName());
+
+        t1.setPriority(Thread.MIN_PRIORITY);
+        t2.setPriority(Thread.MAX_PRIORITY);
 
         t1.start();
 
